@@ -6,8 +6,8 @@
 * [Prerequisites](#prerequisites)
 * [Batch Inference with TorchServe's default handlers](#batch-inference-with-torchserves-default-handlers)
 * [Batch Inference with TorchServe using ResNet-152 model](#batch-inference-with-torchserve-using-resnet-152-model)  
-* [Demo to configure TorchServe ResNet-152 model with batch-supported model](#demo-to-configure-torchServe-resNet-152-model-with-batch-supported-model)
-* [Demo to configure TorchServe ResNet-152 model with batch-supported model using Docker](#demo-to-configure-torchServe-resNet-152-model-with-batch-supported-model-using-docker)
+* [Demo to configure TorchServe ResNet-152 model with batch-supported model](#demo-to-configure-torchserve-resnet-152-model-with-batch-supported-model)
+* [Demo to configure TorchServe ResNet-152 model with batch-supported model using Docker](#demo-to-configure-torchserve-resnet-152-model-with-batch-supported-model-using-docker)
 
 ## Introduction
 
@@ -47,8 +47,8 @@ Started from Torchserve 0.4.1, there are two methods to configure TorchServe to 
 
 The configuration properties that we are interested in are the following:
 
-1. `batch_size`: This is the maximum batch size in `ms` that a model is expected to handle.
-2. `max_batch_delay`: This is the maximum batch delay time TorchServe waits to receive `batch_size` number of requests. If TorchServe doesn't receive `batch_size` number of
+1. `batch_size`: This is the maximum batch size that a model is expected to handle.
+2. `max_batch_delay`: This is the maximum batch delay time in `ms` TorchServe waits to receive `batch_size` number of requests. If TorchServe doesn't receive `batch_size` number of
 requests before this timer time's out, it sends what ever requests that were received to the model `handler`.
 
 Let's look at an example using this configuration through management API:
@@ -90,7 +90,7 @@ In this section lets bring up model server and launch Resnet-152 model, which us
 
 First things first, follow the main [Readme](../README.md) and install all the required packages including `torchserve`.
 
-### Batch inference of Resnet-152 configured with managment API
+### Batch inference of Resnet-152 configured with management API
 
 * Start the model server. In this example, we are starting the model server to run on inference port 8080 and management port 8081.
 
@@ -112,7 +112,7 @@ $ curl localhost:8080/ping
 }
 ```
 
-* Now let's launch resnet-152 model, which we have built to handle batch inference. Because this is an example, we are going to launch 1 worker which handles a batch size of 8 with a `max_batch_delay` of 10ms.
+* Now let's launch resnet-152 model, which we have built to handle batch inference. Because this is an example, we are going to launch 1 worker which handles a batch size of 3 with a `max_batch_delay` of 10ms.
 
 ```text
 $ curl -X POST "localhost:8081/models?url=https://torchserve.pytorch.org/mar_files/resnet-152-batch_v2.mar&batch_size=3&max_batch_delay=10&initial_workers=1"
@@ -258,9 +258,9 @@ curl http://localhost:8081/models/resnet-152-batch_v2
     ```
 ## Demo to configure TorchServe ResNet-152 model with batch-supported model using Docker
 
-Here, we show how to register a model with batch inference support when serving the model using docker contianers. We set the `batch_size` and `max_batch_delay`  in the config.properties similar to the previous section which is being used by [dockered_entrypoint.sh](../docker/dockerd-entrypoint.sh).
+Here, we show how to register a model with batch inference support when serving the model using docker containers. We set the `batch_size` and `max_batch_delay`  in the config.properties similar to the previous section which is being used by [dockered_entrypoint.sh](../docker/dockerd-entrypoint.sh).
 
-### Batch inference of Resnet-152 using docker contianer
+### Batch inference of Resnet-152 using docker container
 
 * Set the batch `batch_size` and `max_batch_delay`  in the config.properties as referenced in the [dockered_entrypoint.sh](../docker/dockerd-entrypoint.sh)
 
